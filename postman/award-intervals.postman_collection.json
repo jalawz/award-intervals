@@ -1,0 +1,44 @@
+{
+	"info": {
+		"name": "Award Intervals API",
+		"description": "API to analyze Golden Raspberry Awards (Worst Picture) intervals between producers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Award Intervals",
+			"request": {
+				"method": "GET",
+				"url": {
+					"raw": "{{baseUrl}}/api/awards/intervals",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "awards", "intervals"]
+				},
+				"description": "Returns the producer with the longest and shortest interval between two consecutive Worst Picture awards"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/awards/intervals",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "awards", "intervals"]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"body": "{\n    \"min\": [\n        {\n            \"producer\": \"Joel Silver\",\n            \"interval\": 1,\n            \"previousWin\": 1990,\n            \"followingWin\": 1991\n        },\n        {\n            \"producer\": \"Producer Tied Min A\",\n            \"interval\": 1,\n            \"previousWin\": 2020,\n            \"followingWin\": 2021\n        }\n    ],\n    \"max\": [\n        {\n            \"producer\": \"Matthew Vaughn\",\n            \"interval\": 13,\n            \"previousWin\": 2002,\n            \"followingWin\": 2015\n        },\n        {\n            \"producer\": \"Producer Tied Max A\",\n            \"interval\": 13,\n            \"previousWin\": 2000,\n            \"followingWin\": 2013\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

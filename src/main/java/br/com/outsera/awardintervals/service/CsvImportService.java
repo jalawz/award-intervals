@@ -2,6 +2,8 @@ package br.com.outsera.awardintervals.service;
 
 import br.com.outsera.awardintervals.model.Movie;
 import br.com.outsera.awardintervals.repository.MovieRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.List;
 @Service
 public class CsvImportService {
 
+	private static final Logger log = LoggerFactory.getLogger(CsvImportService.class);
 	private static final String CSV_FILE = "Movielist.csv";
 
 	private final MovieRepository movieRepository;
@@ -27,11 +30,14 @@ public class CsvImportService {
 	@Transactional
 	public void importMovies() throws IOException {
 		if (movieRepository.count() > 0) {
+			log.info("CSV already loaded, skipping import");
 			return;
 		}
 
+		log.info("Starting CSV import from {}", CSV_FILE);
 		List<Movie> movies = readMovies();
 		movieRepository.saveAll(movies);
+		log.info("CSV import completed: {} movies loaded", movies.size());
 	}
 
 	private List<Movie> readMovies() throws IOException {
@@ -55,6 +61,7 @@ public class CsvImportService {
 	private Movie parseMovie(String line) {
 		String[] columns = line.split(";", -1);
 		if (columns.length != 5) {
+			log.error("Invalid CSV line format: {}", line);
 			throw new IllegalArgumentException("Invalid CSV line: " + line);
 		}
 
